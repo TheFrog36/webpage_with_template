@@ -1,6 +1,6 @@
 const toDo1 = new ExpiringToDo("bolletta luce", ToDo.PRIORITY_LEVEL.medio,["pagamento"], new Date('2022-07-04'));
 const toDo2 = new ExpiringToDo("scadenza patente", ToDo.PRIORITY_LEVEL.basso, ['rinnovo','macchina'], new Date('2027-05-04'));
-const toDo3 = new ExpiringToDo("abbonamento xbox" , ToDo.PRIORITY_LEVEL.alto,['xbox','varie','futile'], new Date('2022-05-10 '));
+const toDo3 = new ExpiringToDo("abbonamento xbox" , ToDo.PRIORITY_LEVEL.alto,['xbox','varie','futile'], new Date('2022-05-10'));
 const toDo4 = new ToDo('latte', ToDo.PRIORITY_LEVEL.moltoAlto, ['spesa']);
 const toDo5 = new MultiToDo('scadenze', ToDo.PRIORITY_LEVEL.medio, ['vario'], [toDo1, toDo2, toDo3, toDo4]);
 const toDo6 = new ExpiringToDo('test', ToDo.PRIORITY_LEVEL.medio, ['test'])
@@ -58,90 +58,49 @@ console.log(ToDo.getHumanDate(toDo1._deadLine))
 
 // displayToDo(listToDo);
 
-// function displayTodoWithTemplate(array){
-//     const template =  `
-//     <div class="task-div" style="background-color: #COLOR;">
-//         <div class="task-griglia">
-//             <div class="titolo-div">#TITOLO | #PRIORITA</div>
-//             <div class="flex-tags-div">
-//             </div>
-//             <div class="checkbox-div">
-//                 <input type="checkbox" class="task-completed-check" id="#CHECKBOXID">
-//                 <label class="task-completed-label" for="#CHECKBOXID">
-//                     <div class="checkbox-label-div"></div>
-//                 </label>
-//             </div>
-//             <div class="creation-date-div">#DATACREAZIONE</div>
-//             <div class="expiration-date-div">#DATASCADENZA</div>
-//         </div>
-//     </div>`;
-//     const toDoContainer = document.getElementById('todo-container')
-//     for(let i = 0;i < array.length; i++){
-//         const toDo = array[i]
-//         const div = document.createElement('div')
-//         const toDoTemplate = template.replace('#TITOLO', toDo.name)
-//                                      .replace('#COLOR', toDo.actual_priority.color)
-//                                      .replace('#PRIORITA', toDo.priority.name)
-//                                      .replace('#DATACREAZIONE', ToDo.getHumanDate(toDo.crationDate))
-//                                      .replace('#DATASCADENZA', ToDo.getHumanDate(toDo.deadLine))
-//                                      .replaceAll('#CHECKBOXID', 'checkbox'+i)
-//         const container = document.getElementById('todo-container')
-//         div.innerHTML = toDoTemplate
-//         toDoContainer.appendChild(div)
-//         const divTagsFlex = div.querySelector('.flex-tags-div'); 
-//         for (const j of toDo.tags) {
-//             const divTag = document.createElement('div');
-//             divTag.className = "tag-div"
-//             const tagText = document.createTextNode(j);
-//             divTag.appendChild(tagText)
-//             divTagsFlex.appendChild(divTag);
-//         }
-
-//     }
-// }
-
-function displayTodo2(array){
-    const toDoContainer = document.getElementById('todo-container')
-    const template = `
-    <div class="task-div" style="background-color:#COLOR;">
-        <div class="task-griglia2">
-            <div class="titolo-div">#TITOLO</div>
-            <div class="flex-tags-div2">
+function displayTodoWithTemplate(array){
+    const template =  `
+    <div class="task-div" style="background-color: #COLOR;">
+        <div class="task-griglia">
+            <div class="titolo-div">#TITOLO | #PRIORITA</div>
+            <div class="flex-tags-div">
             </div>
-            <div class="dates">
-                <div class="creation-date-div2">#DATACREAZIONE</div>
-                <div class="expiration-date-div2">#DATASCADENZA</div>
+            <div class="checkbox-div">
+                <input type="checkbox" class="task-completed-check" id="#CHECKBOXID">
+                <label class="task-completed-label" for="#CHECKBOXID">
+                    <div class="checkbox-label-div"></div>
+                </label>
             </div>
-            <button class="button" onclick="createShadow()">Fatto</button>
+            <div class="creation-date-div">#DATACREAZIONE</div>
+            <div class="expiration-date-div">#DATASCADENZA</div>
         </div>
-    </div>`
-    for(let i = 0; i < array.length; i++){
+    </div>`;
+    const toDoContainer = document.getElementById('todo-container')
+    for(let i = 0;i < array.length; i++){
         const toDo = array[i]
         const div = document.createElement('div')
         const toDoTemplate = template.replace('#TITOLO', toDo.name)
                                      .replace('#COLOR', toDo.actual_priority.color)
-                                     .replace('#DATACREAZIONE', 'da ' + ToDo.getHumanDate(toDo.crationDate))
-                                     .replace('#DATASCADENZA', 'a ' + ToDo.getHumanDate(toDo.deadLine))
+                                     .replace('#PRIORITA', toDo.priority.name)
+                                     .replace('#DATACREAZIONE', ToDo.getHumanDate(toDo.crationDate))
+                                     .replace('#DATASCADENZA', ToDo.getHumanDate(toDo.deadLine))
+                                     .replaceAll('#CHECKBOXID', 'checkbox'+i)
         const container = document.getElementById('todo-container')
         div.innerHTML = toDoTemplate
         toDoContainer.appendChild(div)
-        const divTagsFlex = div.querySelector('.flex-tags-div2');
-        const ul = document.createElement('ul')
+        const divTagsFlex = div.querySelector('.flex-tags-div'); 
         for (const j of toDo.tags) {
-            const li = document.createElement('li')
-            li.innerHTML = j
-            ul.appendChild(li)
+            const divTag = document.createElement('div');
+            divTag.className = "tag-div"
+            const tagText = document.createTextNode(j);
+            divTag.appendChild(tagText)
+            divTagsFlex.appendChild(divTag);
         }
-        divTagsFlex.appendChild(ul)
+
     }
 }
 
-// function createShadow(){
-//     const bottone = document.querySelector('button')
-//     bottone.style.borderRadius = "50px";
-//     bottone.style.background = "#ebebeb";
-//     bottone.style.boxShadow = "inset - 20px 20px 60px #c8c8c8,inset 20px - 20px 60px #ffffff";
-        
-// }
-displayTodo2(listToDo)
+
+displayTodoWithTemplate(listToDo)
+
 
